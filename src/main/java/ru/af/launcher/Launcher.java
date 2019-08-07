@@ -14,8 +14,7 @@ public class Launcher {
             if (args.length > 0) {
                 port = Integer.parseInt(args[0]);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

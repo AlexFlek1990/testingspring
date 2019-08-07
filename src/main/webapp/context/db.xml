@@ -9,37 +9,41 @@
 
     <jpa:repositories base-package="ru.af.repo"/>
 
-    <!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
-    <bean id="entityManagerFactory" factory-method="javax.persistence.Persistence.createEntityManagerFactory">
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="packagesToScan" value="ru.af.entity" />
+        <property name="packagesToScan" value="ru.af.entity"/>
         <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database">
+                    <value type="org.springframework.orm.jpa.vendor.Database">MYSQL</value>
+                </property>
+                <property name="generateDdl" value="false"/>
+                <property name="showSql" value="true"/>
+            </bean>
         </property>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <!--prop key="hibernate.connection.url">${app.connection}</prop-->
-                <prop key="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</prop>
-                <!--prop key="hibernate.globally_quoted_identifiers">true</prop-->
-                <prop key="hibernate.c3p0.min_size">1</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
+                <prop key="hibernate.default_schema">chat</prop>
             </props>
         </property>
     </bean>
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${hibernate.connection.driver_class}"/>
-        <property name="url" value="${hibernate.connection.url}"/>
-        <property name="username" value="${hibernate.connection.username}"/>
-        <property name="password" value="${hibernate.connection.password}"/>
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost/chat"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
     <bean id="transactionManager"
           class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="jpaDialect" ref="hibernateJpaDialect"/>
     </bean>
 
+    <bean id="hibernateJpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+
 </beans>
+
