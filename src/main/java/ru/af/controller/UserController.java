@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    @Autowired
     private MessageRepository messageRepository;
     @Autowired
     private UserRepository userRepository;
@@ -79,7 +80,7 @@ public class UserController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void delete(
-            @PathVariable("id") int id){
+            @PathVariable("id") int id) {
 
         userRepository.delete(id);
     }
